@@ -1,0 +1,29 @@
+ALTER TABLE credit_card_customers
+ADD COLUMN Avg_Transaction_Amt DECIMAL(10,2),
+ADD COLUMN Trans_Ct_per_Month DECIMAL(10,2),
+ADD COLUMN Spend_per_Month DECIMAL(10,2),
+ADD COLUMN Inactivity_Ratio DECIMAL(10,3),
+ADD COLUMN Credit_Flexibility DECIMAL(10,2),
+ADD COLUMN Risk_Utilization_Score DECIMAL(10,3);
+
+--------------------------------------------------
+UPDATE credit_card_customers
+SET
+    Avg_Transaction_Amt = CASE 
+        WHEN Total_Trans_Ct = 0 THEN 0
+        ELSE Total_Trans_Amt / Total_Trans_Ct
+    END,
+    Trans_Ct_per_Month = CASE
+        WHEN Months_on_book = 0 THEN 0
+        ELSE Total_Trans_Ct / Months_on_book
+    END,
+    Spend_per_Month = CASE
+        WHEN Months_on_book = 0 THEN 0
+        ELSE Total_Trans_Amt / Months_on_book
+    END,
+    Inactivity_Ratio = Months_Inactive_12_mon / 12,
+    Credit_Flexibility = Avg_Open_To_Buy - Total_Revolving_Bal,
+    Risk_Utilization_Score =
+        0.6 * Avg_Utilization_Ratio +
+        0.4 * (Total_Revolving_Bal / Credit_Limit);
+
