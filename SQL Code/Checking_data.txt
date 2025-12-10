@@ -1,0 +1,10 @@
+SELECT
+    SUM(CASE WHEN CLIENTNUM IS NULL THEN 1 END) AS client_nulls,
+    SUM(CASE WHEN Attrition_Flag IS NULL THEN 1 END) AS attrition_nulls,
+    SUM(CASE WHEN Customer_Age IS NULL THEN 1 END) AS age_nulls,
+    SUM(CASE WHEN Gender IS NULL THEN 1 END) AS gender_nulls,
+    SUM(CASE WHEN Education_Level IS NULL THEN 1 END) AS edu_nulls,
+    SUM(CASE WHEN Marital_Status IS NULL THEN 1 END) AS marital_nulls,
+    SUM(CASE WHEN Income_Category IS NULL THEN 1 END) AS income_nulls,
+    SUM(CASE WHEN Credit_Limit IS NULL THEN 1 END) AS credit_nulls
+FROM credit_card_customers;
